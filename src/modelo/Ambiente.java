@@ -24,7 +24,13 @@ public class Ambiente {
         this.grade = new TipoCelula[altura][largura];
         this.comida = new int[altura][largura];
         this.feromonio = new MapaFeromonio(altura, largura, taxaEvaporacao, FEROMONIO_MAXIMO);
-        // TODO: inicializar a grade
+
+        for(int linha = 0; linha < altura; linha ++){
+            for(int coluna = 0; coluna < largura; coluna){
+                grade[linha][coluna] = TipoCelula.LIVRE;
+            }
+        }
+        grade[ninho.getLinha()][ninho.getColuna()] = TipoCelula.NINHO;
     }
 
     // ---------- getters ----------
@@ -83,7 +89,7 @@ public class Ambiente {
 
     // Guia Andre, Passo 1a
     public void definirParede(Posicao p) {
-        // TODO
+        grade[p.getLinha()][p.getColuna()] = TipoCelula.PAREDE;
     }
 
     // Guia Andre, Passo 4
