@@ -7,9 +7,7 @@ import modelo.Ambiente;
 import modelo.Posicao;
 
 /**
- * Formiga abstrata: procurar comida e voltar ao ninho.
- * As filhas so decidem "para onde vou agora?" (escolherProximaCelula).
- * DONO: Enzo.
+ARQUIVO QUE VAI CRIAR A CLASSE ABSTRATA DA FORMIGA PRA GERAR OS 2 TIPOS DE FORMIGA
  */
 public abstract class Formiga {
     protected static final int[][] DIRECOES = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
