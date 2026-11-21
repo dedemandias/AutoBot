@@ -26,7 +26,7 @@ public class Ambiente {
         this.feromonio = new MapaFeromonio(altura, largura, taxaEvaporacao, FEROMONIO_MAXIMO);
 
         for(int linha = 0; linha < altura; linha ++){
-            for(int coluna = 0; coluna < largura; coluna){
+            for(int coluna = 0; coluna < largura; coluna++){
                 grade[linha][coluna] = TipoCelula.LIVRE;
             }
         }
@@ -63,28 +63,44 @@ public class Ambiente {
     }
 
     public boolean estaLivre(Posicao p) {
-        // TODO
-        return false;
+        return dentroDoMapa(p) &&
+                grade[p.getLinha()][p.getColuna()] == TipoCelula.LIVRE;
     }
 
     public boolean ehNinho(Posicao p) {
-        // TODO
-        return false;
+        return ninho.equals(p);
     }
 
     public boolean temComida(Posicao p) {
-        // TODO
-        return false;
+        return dentroDoMapa(p) &&
+                comida[p.getLinha()][p.getColuna()] > 0;
     }
 
     // ---------- alteracoes ----------
 
     public void colocarComida(Posicao p, int quantidade) {
-        // TODO
+        if(!dentroDoMapa(p) || quantidade <= 0){
+            throw new IllegalArgumentException("Erro");
+        }
+        if(!estaLivre(p)){
+            throw new IllegalArgumentException("Posição ocupada!");
+        }
+        comida[p.getLinha()][p.getColuna()] += quantidade;
+        grade[p.getLinha()][p.getColuna()] = TipoCelula.COMIDA;
+
     }
 
     public void pegarComida(Posicao p) throws FonteEsgotadaException {
-        // TODO
+        if(!dentroDoMapa(p)){
+            throw new IllegalArgumentException("Erro");
+        }
+        if(!temComida(p)){
+            throw new FonteEsgotadaException("Acabou a comida");
+        }
+        comida[p.getLinha()][p.getColuna()]--;
+        if(comida[p.getLinha()][p.getColuna()] == 0){
+            grade[p.getLinha()][p.getColuna()] = TipoCelula.LIVRE;
+        }
     }
 
     // Guia Andre, Passo 1a
