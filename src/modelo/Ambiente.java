@@ -65,7 +65,7 @@ public class Ambiente {
 
     public boolean estaLivre(Posicao p) {
         return dentroDoMapa(p) &&
-                grade[p.getLinha()][p.getColuna()] != TipoCelula.PAREDE;;
+                grade[p.getLinha()][p.getColuna()] != TipoCelula.PAREDE;
     }
 
     public boolean ehNinho(Posicao p) {
@@ -80,11 +80,14 @@ public class Ambiente {
     // ---------- alteracoes ----------
 
     public void colocarComida(Posicao p, int quantidade) {
-        if(!dentroDoMapa(p) || quantidade <= 0){
-            throw new IllegalArgumentException("Erro");
+        if(!dentroDoMapa(p)){
+            throw new IllegalArgumentException("Posicao fora do mapa: " + p);
         }
-        if(grade[p.getColuna()][p.getColuna()] != TipoCelula.LIVRE){
-            throw new IllegalArgumentException("Posição ocupada!");
+        if(quantidade <= 0){
+            throw new IllegalArgumentException("Quantidade de comida invalida: " + quantidade);
+        }
+        if(grade[p.getLinha()][p.getColuna()] != TipoCelula.LIVRE){
+            throw new IllegalArgumentException("Posicao ocupada: " + p);
         }
         comida[p.getLinha()][p.getColuna()] += quantidade;
         grade[p.getLinha()][p.getColuna()] = TipoCelula.COMIDA;
@@ -93,10 +96,10 @@ public class Ambiente {
 
     public void pegarComida(Posicao p) throws FonteEsgotadaException {
         if(!dentroDoMapa(p)){
-            throw new IllegalArgumentException("Erro");
+            throw new IllegalArgumentException("Posicao fora do mapa: " + p);
         }
         if(!temComida(p)){
-            throw new FonteEsgotadaException("Acabou a comida");
+            throw new FonteEsgotadaException("Acabou a comida em " + p);
         }
         comida[p.getLinha()][p.getColuna()]--;
         if(comida[p.getLinha()][p.getColuna()] == 0){
@@ -111,13 +114,19 @@ public class Ambiente {
 
     // Guia Andre, Passo 4
     public void colocarParede(Posicao p, Posicao comidaAlvo) throws CaminhoBloqueadoException {
+        if(!dentroDoMapa(p)){
+            throw new IllegalArgumentException("Posicao fora do mapa: " + p);
+        }
+        if(ehNinho(p) || p.equals(comidaAlvo)){
+            throw new CaminhoBloqueadoException("Nao pode colocar parede em cima do ninho ou da comida: " + p);
+        }
         TipoCelula antes = grade[p.getLinha()][p.getColuna()];
         grade[p.getLinha()][p.getColuna()] = TipoCelula.PAREDE;
 
         if (!algoritmos.BuscaEmLargura.existeCaminho(this, ninho, comidaAlvo)) {
             grade[p.getLinha()][p.getColuna()] = antes;
             throw new CaminhoBloqueadoException(
-                    "Essa parede bloquearia o caminho até a comida!"
+                    "Essa parede isolaria o ninho da comida: " + p
             );
         }
         feromonio.zerar(p);

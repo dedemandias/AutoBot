@@ -44,12 +44,18 @@ public class Mapas {
         Posicao ninho = null;
 
         for(int linha = 0; linha < altura; linha ++){
+            if(desenho[linha].length() != largura){
+                throw new IllegalArgumentException("A linha " + linha + " do mapa tem tamanho diferente das outras");
+            }
             for(int coluna = 0; coluna < largura; coluna ++){
                 char caractere = desenho[linha].charAt(coluna);
                 if (caractere == 'N') {
                     ninho = new Posicao(linha, coluna);
                 }
             }
+        }
+        if(ninho == null){
+            throw new IllegalArgumentException("O mapa nao tem ninho (N)");
         }
 
         Ambiente ambiente = new Ambiente(altura, largura, ninho, taxaEvaporacao);
@@ -70,7 +76,7 @@ public class Mapas {
                     case '.':
                         break;
                     default:
-                        throw new IllegalArgumentException("Caractere inválido " + caractere);
+                        throw new IllegalArgumentException("Caractere invalido no mapa: " + caractere);
                 }
             }
         }
