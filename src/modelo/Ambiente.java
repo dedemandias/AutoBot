@@ -58,17 +58,18 @@ public class Ambiente {
     // ---------- consultas ----------
 
     public boolean dentroDoMapa(Posicao p) {
-        // TODO
-        return false;
+        return p != null &&
+                p.getLinha() >= 0 && p.getLinha() < altura &&
+                p.getColuna() >= 0 && p.getColuna() < largura;
     }
 
     public boolean estaLivre(Posicao p) {
         return dentroDoMapa(p) &&
-                grade[p.getLinha()][p.getColuna()] == TipoCelula.LIVRE;
+                grade[p.getLinha()][p.getColuna()] != TipoCelula.PAREDE;;
     }
 
     public boolean ehNinho(Posicao p) {
-        return ninho.equals(p);
+        return dentroDoMapa(p) && ninho.equals(p);
     }
 
     public boolean temComida(Posicao p) {
@@ -82,7 +83,7 @@ public class Ambiente {
         if(!dentroDoMapa(p) || quantidade <= 0){
             throw new IllegalArgumentException("Erro");
         }
-        if(!estaLivre(p)){
+        if(grade[p.getColuna()][p.getColuna()] != TipoCelula.LIVRE){
             throw new IllegalArgumentException("Posição ocupada!");
         }
         comida[p.getLinha()][p.getColuna()] += quantidade;
@@ -110,6 +111,15 @@ public class Ambiente {
 
     // Guia Andre, Passo 4
     public void colocarParede(Posicao p, Posicao comidaAlvo) throws CaminhoBloqueadoException {
-        // TODO
+        TipoCelula antes = grade[p.getLinha()][p.getColuna()];
+        grade[p.getLinha()][p.getColuna()] = TipoCelula.PAREDE;
+
+        if (!algoritmos.BuscaEmLargura.existeCaminho(this, ninho, comidaAlvo)) {
+            grade[p.getLinha()][p.getColuna()] = antes;
+            throw new CaminhoBloqueadoException(
+                    "Essa parede bloquearia o caminho até a comida!"
+            );
+        }
+        feromonio.zerar(p);
     }
 }
