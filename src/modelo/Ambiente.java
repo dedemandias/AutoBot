@@ -26,7 +26,7 @@ public class Ambiente {
         this.feromonio = new MapaFeromonio(altura, largura, taxaEvaporacao, FEROMONIO_MAXIMO);
 
         for(int linha = 0; linha < altura; linha ++){
-            for(int coluna = 0; coluna < largura; coluna){
+            for(int coluna = 0; coluna < largura; coluna ++){
                 grade[linha][coluna] = TipoCelula.LIVRE;
             }
         }
