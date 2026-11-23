@@ -3,7 +3,7 @@ package experimentos;
 /**
  * Base abstrata de todo experimento do laboratorio.
  * Pronto: as filhas so preenchem configurar / executar / gerarResultado.
- * DONO: Andre.
+ * DONO: Samuel.
  */
 public abstract class Experimento {
     private final String nome;

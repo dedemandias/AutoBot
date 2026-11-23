@@ -39,7 +39,47 @@ public class Mapas {
 
     // Guia Andre, Passo 1b
     public static Ambiente criar(String[] desenho, int comidaPorFonte, double taxaEvaporacao) {
-        // TODO
-        return null;
+        int altura = desenho.length;
+        int largura = desenho[0].length();
+        Posicao ninho = null;
+
+        for(int linha = 0; linha < altura; linha ++){
+            if(desenho[linha].length() != largura){
+                throw new IllegalArgumentException("A linha " + linha + " do mapa tem tamanho diferente das outras");
+            }
+            for(int coluna = 0; coluna < largura; coluna ++){
+                char caractere = desenho[linha].charAt(coluna);
+                if (caractere == 'N') {
+                    ninho = new Posicao(linha, coluna);
+                }
+            }
+        }
+        if(ninho == null){
+            throw new IllegalArgumentException("O mapa nao tem ninho (N)");
+        }
+
+        Ambiente ambiente = new Ambiente(altura, largura, ninho, taxaEvaporacao);
+
+        for(int linha = 0; linha < altura; linha ++){
+            for(int coluna = 0; coluna < largura; coluna ++){
+                char caractere = desenho[linha].charAt(coluna);
+
+                switch (caractere){
+                    case '#':
+                        ambiente.definirParede(new Posicao(linha, coluna));
+                        break;
+                    case 'C':
+                        ambiente.colocarComida(new Posicao(linha, coluna), comidaPorFonte);
+                        break;
+                    case 'N':
+                        break;
+                    case '.':
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Caractere invalido no mapa: " + caractere);
+                }
+            }
+        }
+        return ambiente;
     }
 }

@@ -1,8 +1,8 @@
 package experimentos;
 
 /**
- * Experimento 4 (bonus): as exploradoras ajudam?  (Guia Andre, Passo 8)
- * DONO: Andre.
+ * Experimento 4 (bonus): as exploradoras ajudam?
+ * DONO: Samuel.
  */
 public class ExperimentoExploradoras extends Experimento {
     private final int exploradoras;
