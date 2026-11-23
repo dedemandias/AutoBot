@@ -6,15 +6,14 @@ import modelo.Ambiente;
 import modelo.Posicao;
 
 /**
- * Ignora o feromonio e anda ao acaso: e a curiosidade da colonia (exploracao).
+ARQUIVO QUE CONTÉM A MOVIMENTAÇÃO DA FORMIGA EXPLORADORA ( QUE IGNORA A INFLUÊNCIA DO FEROMÔNIO )
  */
 public class FormigaExploradora extends Formiga {
-
     public FormigaExploradora(Posicao inicio) {
         super(inicio);
     }
-
-    // Roleta sem pesos: todo vizinho válido tem a mesma chance, com ou sem cheiro
+    // Roleta sem pesos: todo vizinho válido tem a mesma chance,
+    // Ou seja, o feromônio não afeta as probabilidades dela
     @Override
     protected Posicao escolherProximaCelula(Ambiente ambiente, Random sorteio) {
         ArrayList<Posicao> opcoes = new ArrayList<>();
