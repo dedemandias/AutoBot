@@ -33,9 +33,35 @@ public class Simulador {
         this.comidaColetada = 0;
     }
 
-    /** Avanca um tick da simulacao. */
+    // Avança um tick da simulação: nasce, todas agem, o cheiro evapora e o relógio anda
     public void passo() {
-        // TODO
+        // 1. Nascer: no máximo uma formiga por tick, até o limite (assim elas saem do ninho espaçadas)
+        // O nascimento fica ANTES do for, porque adicionar na lista enquanto percorre dá erro
+        if (formigas.size() < maxFormigas) {
+            // Com explorarACada = 20, nascem exploradoras quando já existem 19, 39, 59... formigas
+            // (com 0, que é o padrão, todas são operárias)
+            if (explorarACada > 0 && formigas.size() % explorarACada == explorarACada - 1) {
+                formigas.add(new FormigaExploradora(ambiente.getNinho()));
+            } else {
+                formigas.add(new FormigaOperaria(ambiente.getNinho(), alfa));
+            }
+        }
+
+        // 2. Todas agem: a lista é de Formiga, e o atualizar roda a versão certa de cada tipo (polimorfismo)
+        // O mesmo sorteio para todas: cada chamada pega o próximo número da sequência da semente
+        for (Formiga f : formigas) {
+            // true = entregou comida no ninho neste tick
+            if (f.atualizar(ambiente, sorteio)) {
+                comidaColetada++;
+                somaViagens += f.getUltimaViagem();
+            }
+        }
+
+        // 3. O cheiro evapora depois de todas andarem (o deixado neste tick já começa a sumir)
+        ambiente.getFeromonio().evaporar();
+
+        // 4. O relógio anda
+        tick++;
     }
 
     // ---------- getters ----------
@@ -62,20 +88,34 @@ public class Simulador {
 
     // ---------- metricas (Guia Andre, Passo 2) ----------
 
+    // Quantas formigas estão voltando com comida agora
     public int contarCarregando() {
-        // TODO
-        return 0;
+        int n = 0;
+        for (Formiga f : formigas) {
+            if (f.isCarregando()) {
+                n++;
+            }
+        }
+        return n;
     }
 
+    // Comida entregue a cada 1000 ticks (deixa comparar simulações de tamanhos diferentes)
     public double getComidaPorMilTicks() {
-        // TODO
-        return 0;
+        // Evita dividir por zero antes do primeiro tick
+        if (tick == 0) {
+            return 0;
+        }
+        // 1000.0 (com ponto) força a conta em double; entre inteiros, 7 / 2 daria 3
+        return comidaColetada * 1000.0 / tick;
     }
 
-    // Guia Andre, Passo 7a
+    // Média de passos do ninho até a comida, por viagem entregue (o BFS dá o mínimo possível)
     public double getMediaViagem() {
-        // TODO
-        return 0;
+        if (comidaColetada == 0) {
+            return 0;
+        }
+        // O (double) evita a divisão inteira, que jogaria fora a parte decimal
+        return (double) somaViagens / comidaColetada;
     }
 
     // Guia Andre, Passo 8
