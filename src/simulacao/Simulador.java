@@ -20,8 +20,8 @@ public class Simulador {
 
     private int tick;
     private int comidaColetada;
-    private long somaViagens;      // Guia Andre, Passo 7a
-    private int explorarACada;     // Guia Andre, Passo 8
+    private long somaViagens;      // soma dos passos de todas as viagens entregues
+    private int explorarACada;     // 1 exploradora a cada N formigas (0 = nenhuma)
 
     public Simulador(Ambiente ambiente, long semente, int maxFormigas, double alfa) {
         this.ambiente = ambiente;
@@ -86,7 +86,7 @@ public class Simulador {
         return alfa;
     }
 
-    // ---------- metricas (Guia Andre, Passo 2) ----------
+    // ---------- metricas ----------
 
     // Quantas formigas estão voltando com comida agora
     public int contarCarregando() {
@@ -118,7 +118,7 @@ public class Simulador {
         return (double) somaViagens / comidaColetada;
     }
 
-    // Guia Andre, Passo 8
+    // Fase 2: liga as exploradoras (1 a cada aCada formigas)
     public void setExploradoras(int aCada) {
         // TODO
     }

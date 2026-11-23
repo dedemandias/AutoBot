@@ -145,7 +145,7 @@ public abstract class Formiga {
         this.carregando = carregando;
     }
 
-    // Guia Enzo, Passo 6 (o Andre usa no Simulador)
+    // Passos da última viagem até a comida (o Simulador soma para calcular a média)
     public int getUltimaViagem() {
         return ultimaViagem;
     }
