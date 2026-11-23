@@ -5,6 +5,7 @@ import java.util.Random;
 import algoritmos.BuscaEmLargura;
 import modelo.Ambiente;
 import modelo.MapaFeromonio;
+import modelo.Mapas;
 import modelo.Posicao;
 
 /**
@@ -38,5 +39,27 @@ public class TesteEnzo {
             if (new Posicao(2, 3).equals(f.escolherProximaCelula(b, r))) direita++;
         }
         System.out.println("esperado perto de 1000 -> " + direita);
+
+        // Passos 4 e 5: corredor N . C (só existe um caminho, então o resultado é sempre o mesmo)
+        Ambiente corredor = Mapas.criar(new String[]{"#####", "#N.C#", "#####"}, 10, 0.01);
+        FormigaOperaria g = new FormigaOperaria(corredor.getNinho(), 2.0);
+        int tick = 0;
+        boolean entregou = false;
+        while (!entregou && tick < 20) {
+            tick++;
+            entregou = g.atualizar(corredor, r);
+        }
+        System.out.println("esperado 4 -> " + tick);
+        System.out.println("esperado 2 -> " + g.getUltimaViagem());
+        System.out.println("esperado 5.0 -> " + corredor.getFeromonio().getIntensidade(new Posicao(1, 2)));
+
+        // Passo 7: a exploradora ignora o cheiro forte na direita => cerca de 1 em 4
+        FormigaExploradora ex = new FormigaExploradora(new Posicao(2, 2));
+        Random r2 = new Random(1);
+        int direitaEx = 0;
+        for (int i = 0; i < 1000; i++) {
+            if (new Posicao(2, 3).equals(ex.escolherProximaCelula(b, r2))) direitaEx++;
+        }
+        System.out.println("esperado entre 200 e 300 -> " + direitaEx);
     }
 }
