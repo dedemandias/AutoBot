@@ -1,30 +1,23 @@
 package experimentos;
 
-/**
- * Experimento 4 (bonus): as exploradoras ajudam?
- * DONO: Samuel.
- */
-public class ExperimentoExploradoras extends Experimento {
+public class ExperimentoExploradoras extends ExperimentoAtalho {
     private final int exploradoras;
 
     public ExperimentoExploradoras(int exploradoras) {
-        super("TODO nome", "TODO hipotese");
+    this(exploradoras, 42);
+}
+
+    public ExperimentoExploradoras(int exploradoras, long semente) {
+        super(exploradoras == 0
+                        ? "Atalho sem exploradoras"
+                        : "Atalho com 1 exploradora a cada " + exploradoras + " formigas",
+                "Uma colônia com exploradoras coleta mais comida após o fechamento do atalho.",
+                semente);
         this.exploradoras = exploradoras;
     }
 
     @Override
     public void configurar() {
-        // TODO
-    }
-
-    @Override
-    public void executar(int ticks) {
-        // TODO
-    }
-
-    @Override
-    public String gerarResultado() {
-        // TODO
-        return "";
+        super.configurar(exploradoras);
     }
 }

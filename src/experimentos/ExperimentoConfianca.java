@@ -3,21 +3,28 @@ package experimentos;
 import modelo.Mapas;
 import simulacao.Simulador;
 
-public class ExperimentoConfianca extends Experimento {
-    private Simulador semRastro;
-    private Simulador comRastro;
+    public class ExperimentoConfianca extends Experimento {
+        private Simulador semRastro;
+        private Simulador comRastro;
+
+        private final long semente;
 
     public ExperimentoConfianca() {
+        this(42);
+    }
+
+    public ExperimentoConfianca(long semente) {
         super("Seguir o rastro vale a pena?",
                 "A colônia que segue o feromônio coleta mais comida.");
+        this.semente = semente;
     }
 
     @Override
     public void configurar() {
         semRastro = new Simulador(
-                Mapas.criar(Mapas.DUAS_ROTAS, 5000, 0.01), 42, 120, 0.0);
+                Mapas.criar(Mapas.DUAS_ROTAS, 5000, 0.01), semente, 120, 0.0);
         comRastro = new Simulador(
-                Mapas.criar(Mapas.DUAS_ROTAS, 5000, 0.01), 42, 120, 2.0);
+                Mapas.criar(Mapas.DUAS_ROTAS, 5000, 0.01), semente, 120, 2.0);
     }
 
     @Override
