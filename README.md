@@ -43,10 +43,10 @@ O projeto tem três partes:
 A cada tick, a formiga olha os vizinhos livres e sorteia um deles. Cada vizinho recebe um peso:
 
 ```
-peso = (cheiro + 0.05) ^ alfa
+peso = (cheiro + 0.02) ^ alfa
 ```
 
-- Mais cheiro dá mais chance, mas **nunca 100%**, e o `0.05` garante que uma casa sem cheiro ainda possa ser escolhida. É isso que permite explorar caminhos novos.
+- Mais cheiro dá mais chance, mas **nunca 100%**, e a base `0.02` garante que uma casa sem cheiro ainda possa ser escolhida. É isso que permite explorar caminhos novos.
 - O **alfa** é a confiança no rastro: com `0`, todos os pesos ficam iguais e ela anda ao acaso; com `2`, segue forte o cheiro.
 - Ela não volta para a casa de onde acabou de sair, para não ficar indo e voltando.
 
@@ -63,7 +63,15 @@ Ao achar comida, ela volta **lendo o diário de trás para frente**, uma casa po
 
 ### 🟧 O Feromônio: Como a Colônia Escolhe o Atalho
 
-Na volta, a formiga deposita em cada casa `40 / tamanho do caminho`. **Caminho curto deixa mais cheiro por casa** e ainda é percorrido mais vezes, então a colônia converge para ele. O cheiro evapora 1% por tick: trilhas que ninguém reforça somem em poucas centenas de ticks.
+Na volta, a formiga deposita em cada casa:
+
+```
+depósito = 50 / tamanho do caminho ^ 1,5
+```
+
+**Caminho curto deixa mais cheiro por casa** e ainda é percorrido mais vezes, então a colônia converge para ele. O expoente `1,5` dá ainda mais peso à distância: um caminho com metade do tamanho deixa cerca de **2,8 vezes** mais cheiro por casa. O cheiro evapora 1% por tick: trilhas que ninguém reforça somem em poucas centenas de ticks.
+
+> 🧪 **Por que esses números?** A base `0.02` e o depósito `50 / tamanho^1,5` foram escolhidos testando mais de **70 mil simulações** (várias bases, fórmulas de depósito, sementes e cenários, incluindo abrir e fechar o atalho no meio). Em média, comparados com a versão anterior (`0.05` e `40 / tamanho`), eles trazem **64% mais comida**, deixam o caminho usado mais curto e fazem a colônia trocar melhor para um atalho que aparece depois.
 
 ### 🐜 Dois Tipos de Formiga
 
@@ -100,9 +108,9 @@ Mapa **"Duas Rotas"** (26 × 44) · 120 formigas · 3000 ticks · semente 42
 
 | Experimento | Hipótese | Resultado |
 |---|---|---|
-| **Confiança no Rastro** | A colônia que segue o feromônio coleta mais | Alfa 0: **89** · Alfa 2: **544** |
-| **Atalho Fechado** | A colônia acha outra rota quando o atalho fecha | Antes: **544** · Depois de fechar: **404** |
-| **Formigas contra o BFS** | A média das viagens fica acima do mínimo | BFS: **31** passos · Formigas: **62,5** |
+| **Confiança no Rastro** | A colônia que segue o feromônio coleta mais | Alfa 0: **89** · Alfa 2: **747** |
+| **Atalho Fechado** | A colônia acha outra rota quando o atalho fecha | Antes: **747** · Depois de fechar: **686** |
+| **Formigas contra o BFS** | A média das viagens fica acima do mínimo | BFS: **31** passos · Formigas: **70,1** |
 
 > ⏳ **Em Andamento:** resultados com várias sementes e o experimento das exploradoras.
 
@@ -116,7 +124,8 @@ src/
 ├── simulacao/     Simulador
 ├── experimentos/  Experimento (abstrata) e um experimento por hipótese
 ├── excecoes/      FonteEsgotadaException, CaminhoBloqueadoException, PosicaoInvalidaException
-└── app/           Main (tela do mapa) e Laboratorio (experimentos)
+├── app/           Main (tela do mapa) e Laboratorio (experimentos)
+└── naopoo/        Visualizacao (tela gráfica ao vivo, extra)
 ```
 
 ## ▶️ Como Rodar no Seu Computador
@@ -128,6 +137,7 @@ Precisa do **Java 21** ou mais novo. Na pasta do projeto:
 javac -encoding UTF-8 -d out (Get-ChildItem -Recurse -Filter *.java src).FullName
 java -cp out app.Main
 java -cp out app.Laboratorio
+java -cp out naopoo.Visualizacao
 ```
 
 **🐧 Linux / 🍎 macOS**
@@ -135,10 +145,12 @@ java -cp out app.Laboratorio
 javac -encoding UTF-8 -d out $(find src -name "*.java")
 java -cp out app.Main
 java -cp out app.Laboratorio
+java -cp out naopoo.Visualizacao
 ```
 
 - `app.Main`: roda 3000 ticks e desenha o mapa no console.
 - `app.Laboratorio`: roda os experimentos e imprime os resultados.
+- `naopoo.Visualizacao`: abre a **tela gráfica** com a simulação ao vivo. Dá para trocar de mapa, colocar paredes e comida com o mouse, abrir e fechar o atalho e ajustar a velocidade, o número de formigas, as exploradoras, a confiança (alfa) e a evaporação.
 
 **Legenda do Mapa no Console:** `#` Parede · `N` Ninho · `C` Comida · `f` Formiga Procurando · `o` Formiga Carregando · `*` Cheiro Forte · `:` Cheiro Médio · `.` Sem Cheiro
 

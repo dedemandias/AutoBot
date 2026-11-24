@@ -11,7 +11,9 @@ ARQUIVO QUE VAI CRIAR A CLASSE ABSTRATA DA FORMIGA PRA GERAR OS 2 TIPOS DE FORMI
  */
 public abstract class Formiga {
     protected static final int[][] DIRECOES = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    private static final double QUANTIDADE_DEPOSITO = 40.0;
+    // Depósito = QUANTIDADE_DEPOSITO / tamanho ^ EXPOENTE_DISTANCIA (valores escolhidos testando milhares de simulações)
+    private static final double QUANTIDADE_DEPOSITO = 50.0;
+    private static final double EXPOENTE_DISTANCIA = 1.5;
 
     private Posicao posicao;
     private Posicao anterior;
@@ -68,7 +70,8 @@ public abstract class Formiga {
                 carregando = true;
                 ultimaViagem = diario.size() - 1;
                 // Caminho curto deixa mais cheiro por casa: é assim que a colônia escolhe o melhor atalho
-                deposito = QUANTIDADE_DEPOSITO / diario.size();
+                // O expoente 1,5 dá ainda mais vantagem à distância curta (caminho com metade do tamanho deixa ~2,8x mais cheiro)
+                deposito = QUANTIDADE_DEPOSITO / Math.pow(diario.size(), EXPOENTE_DISTANCIA);
             } catch (FonteEsgotadaException e) {
                 // Outra formiga pegou a última unidade antes - vai continuar procurando
                 carregando = false;
