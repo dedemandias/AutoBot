@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import experimentos.ExperimentoAtalho;
 import experimentos.ExperimentoConfianca;
 import experimentos.ExperimentoGabarito;
+import experimentos.ExperimentoExploradoras;
 
 /**
  * Tela de console: roda todos os experimentos e imprime os resultados.
@@ -13,20 +14,28 @@ import experimentos.ExperimentoGabarito;
 public class Laboratorio {
 
     public static void main(String[] args) {
-        ArrayList<Experimento> experimentos = new ArrayList<>();
-        experimentos.add(new ExperimentoConfianca());
-        experimentos.add(new ExperimentoAtalho());
-        experimentos.add(new ExperimentoGabarito());
+        long[] sementes = {42, 1, 2, 3};
 
-        for (Experimento experimento : experimentos) {
-            System.out.println(experimento.getNome());
-            System.out.println("Hipótese: " + experimento.getHipotese());
+        for (long semente : sementes) {
+            System.out.println("Semente " + semente);
 
-            experimento.configurar();
-            experimento.executar(3000);
+            ArrayList<Experimento> experimentos = new ArrayList<>();
+            experimentos.add(new ExperimentoConfianca(semente));
+            experimentos.add(new ExperimentoAtalho(semente));
+            experimentos.add(new ExperimentoGabarito(semente));
+            experimentos.add(new ExperimentoExploradoras(0, semente));
+            experimentos.add(new ExperimentoExploradoras(20, semente));
 
-            System.out.println("Resultado: " + experimento.gerarResultado());
-            System.out.println();
+            for (Experimento experimento : experimentos) {
+                System.out.println(experimento.getNome());
+                System.out.println("Hipótese: " + experimento.getHipotese());
+
+                experimento.configurar();
+                experimento.executar(3000);
+
+                System.out.println("Resultado: " + experimento.gerarResultado());
+                System.out.println();
+            }
         }
     }
 }

@@ -113,7 +113,26 @@ Mapa **"Duas Rotas"** (26 × 44) · 120 formigas · 3000 ticks · semente 42
 | **Atalho Fechado** | A colônia acha outra rota quando o atalho fecha | Antes: **747** · Depois de fechar: **686** |
 | **Formigas contra o BFS** | A média das viagens fica acima do mínimo | BFS: **31** passos · Formigas: **70,1** |
 
-> ⏳ **Em Andamento:** resultados com várias sementes e o experimento das exploradoras.
+### Resultados com quatro sementes
+
+No Atalho e nas Exploradoras, foram executados 3.000 ticks antes do
+fechamento e 3.000 depois. A coluna Atalho serve de referência sem exploradoras.
+
+| Semente | Confiança (alfa 0 / alfa 2) | Atalho sem exploradoras (antes / depois) | Gabarito (BFS / média em passos) | 1 exploradora a cada 20 (antes / depois) |
+|---|---:|---:|---:|---:|
+| 42 | 89 / 747 | 747 / 686 | 31 / 70,1 | 646 / 497 |
+| 1 | 98 / 895 | 895 / 467 | 31 / 54,2 | 1180 / 610 |
+| 2 | 84 / 806 | 806 / 504 | 31 / 49,3 | 767 / 229 |
+| 3 | 91 / 833 | 833 / 659 | 31 / 52,4 | 1285 / 473 |
+
+- **Confiança no rastro.** O alfa 2 coletou mais comida nas quatro sementes.
+  A diferença variou de 658 a 797 unidades.
+- **Atalho fechado.** A colônia continuou entregando comida após o fechamento
+  nas quatro sementes. O total caiu em todas em relação ao período anterior.
+- **Formigas contra o BFS.** O menor caminho teve 31 passos em todas as rodadas.
+  A média das formigas variou de 49,3 a 70,1 passos.
+- **Exploradoras.** Após o fechamento, a colônia com exploradoras coletou mais
+  na semente 1 e menos nas outras três. A vantagem apareceu em uma das quatro rodadas.
 
 ## 🗂️ Organização do Código
 
