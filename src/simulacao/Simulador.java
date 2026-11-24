@@ -35,7 +35,22 @@ public class Simulador {
 
     /** Avanca um tick da simulacao. */
     public void passo() {
-        // TODO
+        if (formigas.size() < maxFormigas) {
+            if(explorarACada > 0 &&
+                    formigas.size() % explorarACada == explorarACada - 1){
+                formigas.add(new FormigaOperaria(ambiente.getNinho(), alfa));
+            } else{
+                formigas.add(new FormigaOperaria(ambiente.getNinho(), alfa));
+            }
+        }
+        for(Formiga f: formigas){
+            if(f.atualizar(ambiente, sorteio){
+                comidaColetada++;
+                somaViagens += f.getUltimaViagem();
+            }
+        }
+        ambiente.getFeromonio().evaporar();
+        tick++;
     }
 
     // ---------- getters ----------
@@ -60,26 +75,38 @@ public class Simulador {
         return alfa;
     }
 
+    public double getSomaViagens(){return somaViagens;}
+
     // ---------- metricas (Guia Andre, Passo 2) ----------
 
     public int contarCarregando() {
-        // TODO
-        return 0;
+        int contador = 0;
+
+        for(Formiga f: formigas){
+            if(f.isCarregando()){
+                contador++;
+            }
+        }
+        return contador;
     }
 
     public double getComidaPorMilTicks() {
-        // TODO
-        return 0;
+        if(!tick == 0){
+            return 0;
+        }
+        return (comidaColetada * 1000)/tick;
     }
 
     // Guia Andre, Passo 7a
     public double getMediaViagem() {
-        // TODO
-        return 0;
+        if(comidaColetada == 0){
+            return 0;
+        }
+        return (double) somaViagens/comidaColetada;
     }
 
     // Guia Andre, Passo 8
     public void setExploradoras(int aCada) {
-        // TODO
+        this explorarACada = aCada;
     }
 }
