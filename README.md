@@ -16,8 +16,9 @@
 </p>
 
 <p align="center"><sub>
-  🟤 Ninho &nbsp;·&nbsp; 🟢 Comida &nbsp;·&nbsp; ⚫ Formiga Procurando &nbsp;·&nbsp; 🔴 Formiga Carregando Comida &nbsp;·&nbsp; 🟧 Trilha de Feromônio
-  <br><br>No tick 1800, o atalho do meio é fechado com paredes, e a colônia encontra sozinha a rota de cima.
+  🟤 Ninho &nbsp;·&nbsp; 🍓 Comida &nbsp;·&nbsp; ⚫ Operária &nbsp;·&nbsp; 🔵 Exploradora &nbsp;·&nbsp; 🟧 Trilha de Feromônio
+  <br><br>As formigas levam pedacinhos da comida até o ninho, e ela vai sendo comida aos poucos.
+  <br>No tick 1800, o atalho do meio é fechado com paredes, e a colônia encontra sozinha outra rota.
 </sub></p>
 
 ---
