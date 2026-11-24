@@ -125,33 +125,40 @@ src/
 ├── simulacao/     Simulador
 ├── experimentos/  Experimento (abstrata) e um experimento por hipótese
 ├── excecoes/      FonteEsgotadaException, CaminhoBloqueadoException, PosicaoInvalidaException
-├── app/           Main (tela do mapa) e Laboratorio (experimentos)
-└── naopoo/        Visualizacao (tela gráfica ao vivo, extra)
+└── app/           Visualizacao (aplicação gráfica), Main (mapa no console) e Laboratorio (experimentos)
 ```
 
 ## ▶️ Como Rodar no Seu Computador
 
-Precisa do **Java 21** ou mais novo. Na pasta do projeto:
+Precisa do **Java 21** ou mais novo. Primeiro, **entre na pasta do projeto** (onde está a pasta `src`) e compile:
 
 **🪟 Windows (PowerShell)**
 ```powershell
+cd caminho\para\AutoBot
 javac -encoding UTF-8 -d out (Get-ChildItem -Recurse -Filter *.java src).FullName
-java -cp out app.Main
-java -cp out app.Laboratorio
-java -cp out naopoo.Visualizacao
+java -cp out app.Visualizacao
 ```
 
 **🐧 Linux / 🍎 macOS**
 ```bash
+cd caminho/para/AutoBot
 javac -encoding UTF-8 -d out $(find src -name "*.java")
+java -cp out app.Visualizacao
+```
+
+### 🖥️ A aplicação: `app.Visualizacao`
+
+Abre a **tela gráfica** com a simulação ao vivo. Dá para trocar de mapa, colocar paredes e comida com o mouse, abrir e fechar o atalho e ajustar a velocidade, o número de formigas, as exploradoras, a confiança (alfa) e a evaporação. Os gráficos e o registro de exceções mostram tudo acontecendo na hora.
+
+### ⌨️ Versões no console
+
+```
 java -cp out app.Main
 java -cp out app.Laboratorio
-java -cp out naopoo.Visualizacao
 ```
 
 - `app.Main`: roda 3000 ticks e desenha o mapa no console.
 - `app.Laboratorio`: roda os experimentos e imprime os resultados.
-- `naopoo.Visualizacao`: abre a **tela gráfica** com a simulação ao vivo. Dá para trocar de mapa, colocar paredes e comida com o mouse, abrir e fechar o atalho e ajustar a velocidade, o número de formigas, as exploradoras, a confiança (alfa) e a evaporação.
 
 **Legenda do Mapa no Console:** `#` Parede · `N` Ninho · `C` Comida · `f` Formiga Procurando · `o` Formiga Carregando · `*` Cheiro Forte · `:` Cheiro Médio · `.` Sem Cheiro
 
