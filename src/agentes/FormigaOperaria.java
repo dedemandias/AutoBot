@@ -10,8 +10,8 @@ ARQUIVO QUE CONTÉM A MOVIMENTAÇÃO DA FORMIGA OPERÁRIA ( QUE DÁ PRIORIDADE �
 */
 
 public class FormigaOperaria extends Formiga {
-    private static final double BASE = 0.05;
-    private final double alfa;
+    private static final double BASE = 0.02;
+    private double alfa;
     public FormigaOperaria(Posicao inicio, double alfa) {
         super(inicio);
         this.alfa = alfa;
@@ -19,6 +19,10 @@ public class FormigaOperaria extends Formiga {
     // O alfa é a confiança no rastro: alfa = 0 deixa todos os pesos iguais a 1 (puro acaso)
     public double getAlfa() {
         return alfa;
+    }
+    // Muda a confiança no rastro com a simulação rodando (usado pela tela gráfica)
+    public void setAlfa(double alfa) {
+        this.alfa = alfa;
     }
     // Escolhe a próxima célula por sorteio ponderado (roleta) de modo que cada vizinho válido
     // tem sua chance com base na confiança no rastro e na intensidade do feromônio naquele bloco
@@ -37,7 +41,7 @@ public class FormigaOperaria extends Formiga {
                 continue;
             }
             double cheiro = ambiente.getFeromonio().getIntensidade(p);
-            // O peso vai ser (cheiro + 0.05) ^ alfa e a base (0.05) impede peso zero, então casa sem cheiro ainda pode ser escolhida
+            // O peso vai ser (cheiro + 0.02) ^ alfa e a base (0.02) impede peso zero, então casa sem cheiro ainda pode ser escolhida
             double peso = Math.pow(cheiro + BASE, alfa);
             opcoes.add(p);
             pesos.add(peso);

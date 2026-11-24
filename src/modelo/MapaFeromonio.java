@@ -6,7 +6,7 @@ package modelo;
  */
 public class MapaFeromonio {
     private final double[][] intensidade;
-    private final double taxaEvaporacao;
+    private double taxaEvaporacao;
     private final double maximo;
 
     public MapaFeromonio(int linhas, int colunas, double taxaEvaporacao, double maximo) {
@@ -25,6 +25,14 @@ public class MapaFeromonio {
 
     public double getTaxaEvaporacao() {
         return taxaEvaporacao;
+    }
+
+    // Muda a evaporação com a simulação rodando (usado pela tela gráfica); vale de 0 a 1
+    public void setTaxaEvaporacao(double taxaEvaporacao) {
+        if (taxaEvaporacao < 0 || taxaEvaporacao > 1) {
+            throw new IllegalArgumentException("Taxa de evaporacao invalida: " + taxaEvaporacao);
+        }
+        this.taxaEvaporacao = taxaEvaporacao;
     }
 
     // A Formiga deposita o feromônio na sua posição atual, respeitando o máximo de feromônio por bloco
