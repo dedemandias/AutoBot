@@ -1,4 +1,4 @@
-package naopoo;
+package app;
 
 import agentes.Formiga;
 import agentes.FormigaExploradora;
@@ -65,11 +65,11 @@ import modelo.TipoCelula;
 import simulacao.Simulador;
 
 /**
- * Tela grafica da colonia (extra, fora da parte avaliada de POO).
+ * Tela grafica da colonia: a aplicacao principal do projeto.
  * Ela so desenha e recebe cliques: quem anda e decide sao as classes do projeto
  * (Mapas, Ambiente, Simulador, FormigaOperaria, FormigaExploradora e o BFS).
  *
- * Rodar: java -cp out naopoo.Visualizacao
+ * Rodar: java -cp out app.Visualizacao
  */
 public class Visualizacao extends JFrame {
 
