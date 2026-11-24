@@ -15,8 +15,8 @@ public class Simulador {
     private final Ambiente ambiente;
     private final Random sorteio;
     private final ArrayList<Formiga> formigas;
-    private final int maxFormigas;
-    private final double alfa;
+    private int maxFormigas;
+    private double alfa;
 
     private int tick;
     private int comidaColetada;
@@ -86,6 +86,26 @@ public class Simulador {
         return alfa;
     }
 
+    // ---------- ajustes com a simulacao rodando (usados pela tela grafica) ----------
+
+    // Muda a confianca de todas as operarias que ja existem e das que vao nascer
+    public void setAlfa(double alfa) {
+        this.alfa = alfa;
+        for (Formiga f : formigas) {
+            if (f instanceof FormigaOperaria) {
+                ((FormigaOperaria) f).setAlfa(alfa);
+            }
+        }
+    }
+
+    // Muda o limite de formigas; se diminuir, as ultimas que nasceram saem da colonia
+    public void setMaxFormigas(int maxFormigas) {
+        this.maxFormigas = maxFormigas;
+        while (formigas.size() > maxFormigas) {
+            formigas.remove(formigas.size() - 1);
+        }
+    }
+
     // ---------- metricas ----------
 
     // Quantas formigas estão voltando com comida agora
@@ -120,6 +140,7 @@ public class Simulador {
 
     // Fase 2: liga as exploradoras (1 a cada aCada formigas)
     public void setExploradoras(int aCada) {
-        // TODO
+        // 0 = nenhuma; 10 = a 10a, a 20a, a 30a... formiga nasce exploradora (regra no passo())
+        explorarACada = aCada;
     }
 }

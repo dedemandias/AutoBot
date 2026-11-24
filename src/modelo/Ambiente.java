@@ -131,4 +131,28 @@ public class Ambiente {
         }
         feromonio.zerar(p);
     }
+
+    // Tira uma parede (a borda do mapa nao pode ser removida). Usado pela tela grafica.
+    public void removerParede(Posicao p) {
+        if (!dentroDoMapa(p)) {
+            throw new IllegalArgumentException("Posicao fora do mapa: " + p);
+        }
+        if (p.getLinha() == 0 || p.getColuna() == 0 || p.getLinha() == altura - 1 || p.getColuna() == largura - 1) {
+            throw new IllegalArgumentException("A borda do mapa nao pode ser removida: " + p);
+        }
+        if (grade[p.getLinha()][p.getColuna()] == TipoCelula.PAREDE) {
+            grade[p.getLinha()][p.getColuna()] = TipoCelula.LIVRE;
+        }
+    }
+
+    // Tira uma fonte de comida inteira. Usado pela tela grafica.
+    public void removerComida(Posicao p) {
+        if (!dentroDoMapa(p)) {
+            throw new IllegalArgumentException("Posicao fora do mapa: " + p);
+        }
+        if (grade[p.getLinha()][p.getColuna()] == TipoCelula.COMIDA) {
+            comida[p.getLinha()][p.getColuna()] = 0;
+            grade[p.getLinha()][p.getColuna()] = TipoCelula.LIVRE;
+        }
+    }
 }
